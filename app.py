@@ -1,44 +1,115 @@
 import streamlit as st
-from PIL import Image
 import time
 
-# --- APP CONFIGURATION ---
-st.set_page_config(page_title="Kafa Smart Segregation Hub", page_icon="♻️", layout="centered")
+# --- STYLING HOOKS (Injects CSS to enforce absolute readability and colors) ---
+st.set_page_config(page_title="GCC Green Rewards", page_icon="🌸", layout="wide")
 
-# --- HEADER ---
-st.title("♻️ Kafa Smart Waste Incentives App")
-st.markdown("### *If you mix up waste you are an idiot*")
-st.caption("Don't be an idiot, then you will get money")
-st.divider()
+st.markdown("""
+    <style>
+    /* Main background styling set to a soft light red */
+    .stApp {
+        background-color: #FEE2E2;
+    }
+    
+    /* Soft white human-designed card styling */
+    .dashboard-card {
+        background-color: #FFFFFF;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0px 4px 20px rgba(149, 157, 165, 0.1);
+        margin-bottom: 20px;
+        border: 1px solid #E2E8F0;
+    }
+    
+    /* Global Text Enforcements to Deep Dark Red */
+    p, span, label, .stRadio, .stSelectbox, div[data-testid="stMarkdownContainer"] p {
+        color: #7F1D1D !important;
+        font-weight: 500;
+    }
+    
+    /* Global Header Enforcements to Deep Dark Red */
+    h1, h2, h3, h4, h5, h6 {
+        color: #7F1D1D !important;
+        font-family: 'Inter', sans-serif;
+        font-weight: bold !important;
+    }
+    
+    /* Forcing the text input box background to remain Solid White with dark text */
+    div[data-testid="stTextInput"] input {
+        background-color: #FFFFFF !important;
+        color: #1E293B !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 8px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# --- STEP 1: SIMULATE HOUSEHOLD SCAN ---
-st.subheader("Step 1: Scan Household QR/Barcode")
-household_id = st.text_input("Enter Household ID or scan Barcode (e.g., kafabintekaderhome):", placeholder="kafazarin")
+# --- APP LAYOUT ---
+# Main grid split: Hero Card (Left) and Mascot Panel (Right)
+col_main, col_mascot = st.columns(2)
+
+with col_main:
+    st.markdown("""
+        <div class="dashboard-card" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="flex: 1; padding-right: 15px;">
+                <h1 style="margin: 0; font-size: 28px;">Hi, Kafa! ✨</h1>
+                <p style="color: #7F1D1D; font-size: 15px; margin-top: 5px; margin-bottom: 15px;">
+                    Glad to see you again.
+                </p>
+                <hr style="border: 0.5px solid #E2E8F0; margin: 15px 0;">
+                <p style="color: #7F1D1D; font-weight: 600; font-size: 14px; margin-bottom: 5px;">⚡ Trash Talk that actually helps:</p>
+                <ul style="color: #7F1D1D; padding-left: 20px; line-height: 1.6; font-size: 13px; margin: 0;">
+                    <li> Think before you throw </li>
+                    <li>Trash has a bad habit of coming back to bite us</li>
+                </ul>
+            </div>
+            <!-- Your Custom Anime Girl Visual Anchor Block -->
+            <div style="text-align: center; margin-left: 10px;">
+                <img src="https://githubusercontent.com" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover;">
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col_mascot:
+    st.markdown("""
+        <div class="dashboard-card" style="text-align: center; padding: 25px; height: 100%;">
+            <img src="https://icons8.com" style="width: 80px; margin-bottom: 10px;">
+            <h4 style="margin: 0; color: #7F1D1D;">Eco Assistant, Oggy</h4>
+            <p style="font-size: 12px; color: #7F1D1D; margin: 5px 0 0 0;">Keep Our World Clean!</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+# Interactive Form Elements wrapped in an administrative sub-panel
+st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+st.subheader("📌 Household Verification Panel")
+
+household_id = st.text_input("Scan or Enter Household Account ID:", placeholder="e.g., Kafa's home")
 
 if household_id:
-    st.success(f"✅ Connection Established with Household Account: **{household_id}**")
-    
-    # --- STEP 2: EVALUATION ---
-    st.subheader("Step 2: Van Driver Inspection")
-    st.write("Does the household's waste match the partitioned compartments?")
+    st.markdown(f"Status: <span style='color: #2563EB; font-weight: bold;'>Account Found ({household_id})</span>", unsafe_allow_html=True)
+    st.write("")
     
     col1, col2 = st.columns(2)
     with col1:
-        is_sorted = st.radio("Segregation Status:", ["Properly Sorted (Green & Blue Bins)", "Mixed Trash (Failed Verification)"])
+        is_sorted = st.radio("Field Inspection Result:", ["Properly Separated (Green/Blue Bins Match)", "Unsorted Mixed Trash (Failed Verification)"])
     with col2:
-        waste_type = st.selectbox("Primary Waste Feedstock:", ["Organic Food Waste (For AD Plant)", "Textile Jhut/Plastics (For RDF)", "Unsorted/Contaminated"])
+        waste_type = st.selectbox("Primary Tagged Feedstock:", ["Organic Material (AD Route)", "Textile Jhut & Plastics (RDF Route)", "Contaminated Residue"])
 
-    # --- STEP 3: TRANSACTION ---
-    st.subheader("Step 3: Process Reward Trigger")
-    if st.button("🚀 Log Collection & Process Points"):
-        with st.spinner("Syncing data to GCC Central Server..."):
-            time.sleep(1.5) # Simulates a network delay
+    st.write("")
+    if st.button("➕ Log Entry & Dispatch Rewards"):
+        with st.spinner("Processing ledger transaction..."):
+            time.sleep(1.2)
             
-        if "Properly Sorted" in is_sorted:
-            st.balloons() # Triggers an on-screen celebratory animation
-            st.success("### 🎉 Transaction Successful!")
-            st.metric(label="bKash Incentive Dispatched", value="+15 BDT", delta="Total Household Points: 240")
-            st.info(f"Feedstock successfully tagged as **{waste_type}** and routed to processing hub.")
+        if "Properly Separated" in is_sorted:
+            st.balloons()
+            st.success("### 🎉 Good Job, Buddy!")
+            
+            # Metric blocks matching dashboard card styles
+            m_col1, m_col2 = st.columns(2)
+            with m_col1:
+                st.metric(label="Incentive Transferred via bKash", value="+26.00 BDT")
+            with m_col2:
+                st.metric(label="Feedstock System Routing", value=waste_type)
         else:
-            st.error("❌ Transaction Flagged")
-            st.warning("No incentives awarded. Household issued a system alert to separate next time.")
+            st.error("❌ Bad man, no money for you.")
+st.markdown('</div>', unsafe_allow_html=True)
