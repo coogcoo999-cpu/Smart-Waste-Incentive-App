@@ -62,8 +62,8 @@ with col_main:
             </p>
             <hr style="border: 0.5px solid #E2E8F0; margin: 15px 0;">
             <p style="color: #7F1D1D; font-weight: 600; font-size: 14px; margin-bottom: 5px;">⚡ Trash Talk that actually helps:</p>
-            <p style="margin: 0; font-size: 13px;">📌 Think before you throw</p>
-            <p style="margin: 0; font-size: 13px;">📌 Trash has a bad habit of coming back to bite us</p>
+            <p style="margin: 0; font-size: 13px;"> Think before you throw</p>
+            <p style="margin: 0; font-size: 13px;"> Trash has a bad habit of coming back to bite us</p>
         """, unsafe_allow_html=True)
     with c2:
         try:
@@ -91,7 +91,7 @@ with col_mascot:
 
 # Interactive Form Elements wrapped in an administrative sub-panel
 st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-st.subheader("📌 Household Verification Panel")
+st.subheader(" Household Verification Panel")
 
 household_id = st.text_input("Scan or Enter Household Account ID:", placeholder="e.g., kafa's home")
 
