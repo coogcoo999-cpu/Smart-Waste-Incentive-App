@@ -1,8 +1,9 @@
 import streamlit as st
 import time
+from PIL import Image
 
 # --- STYLING HOOKS (Injects CSS to enforce absolute readability and colors) ---
-st.set_page_config(page_title="Green Rewards", page_icon="🌸", layout="wide")
+st.set_page_config(page_title=" Green Rewards", page_icon="🌸", layout="wide")
 
 st.markdown("""
     <style>
@@ -45,38 +46,46 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- APP LAYOUT ---
-# Main grid split: Hero Card (Left) and Mascot Panel (Right)
 col_main, col_mascot = st.columns(2)
 
 with col_main:
-    st.markdown("""
-        <div class="dashboard-card" style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="flex: 1; padding-right: 15px;">
-                <h1 style="margin: 0; font-size: 28px;">Hi, Kafa! ✨</h1>
-                <p style="color: #7F1D1D; font-size: 15px; margin-top: 5px; margin-bottom: 15px;">
-                    Glad to see you again.
-                </p>
-                <hr style="border: 0.5px solid #E2E8F0; margin: 15px 0;">
-                <p style="color: #7F1D1D; font-weight: 600; font-size: 14px; margin-bottom: 5px;">⚡ Trash Talk that actually helps:</p>
-                <ul style="color: #7F1D1D; padding-left: 20px; line-height: 1.6; font-size: 13px; margin: 0;">
-                    <li> Think before you throw</li>
-                    <li> Trash has a bad habit of coming back to bite us</li>
-                </ul>
-            </div>
-            <!-- Your Custom Anime Girl Visual Anchor Block -->
-            <div style="text-align: center; margin-left: 10px;">
-                <img src="https://githubusercontent.com" style="width: 120px; height: 120px; border-radius: 12px; object-fit: cover;">
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    # We use Streamlit container columns to hold our custom layout fields
+    st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+    
+    # Left content arrangement split into Text data vs Local Mascot layout
+    c1, c2 = st.columns([2, 1])
+    with c1:
+        st.markdown("""
+            <h1 style="margin: 0; font-size: 28px;">Hi, Kafa! ✨</h1>
+            <p style="color: #7F1D1D; font-size: 15px; margin-top: 5px; margin-bottom: 15px;">
+                Glad to see you again.
+            </p>
+            <hr style="border: 0.5px solid #E2E8F0; margin: 15px 0;">
+            <p style="color: #7F1D1D; font-weight: 600; font-size: 14px; margin-bottom: 5px;">⚡ Trash Talk that actually helps:</p>
+            <p style="margin: 0; font-size: 13px;">📌 Think before you throw</p>
+            <p style="margin: 0; font-size: 13px;">📌 Trash has a bad habit of coming back to bite us</p>
+        """, unsafe_allow_html=True)
+    with c2:
+        try:
+            # Native relative local path calling bypassing GitHub web errors
+            img_mascot = Image.open("mascot.png")
+            st.image(img_mascot, use_container_width=True)
+        except:
+            st.caption("Mascot loading...")
+            
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_mascot:
+    st.markdown('<div class="dashboard-card" style="text-align: center;">', unsafe_allow_html=True)
+    try:
+        # Native relative path calling for Oggy's local jpeg file asset
+        img_cat = Image.open("cat.jpeg")
+        st.image(img_cat, width=130)
+    except:
+        st.caption("Cat avatar loading...")
     st.markdown("""
-        <div class="dashboard-card" style="text-align: center; padding: 20px; height: 100%;">
-            <!-- Your Cat's Photo Asset (.jpeg format matching your repository configuration) -->
-            <img src="https://githubusercontent.com" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #7F1D1D;">
-            <h4 style="margin: 0; color: #7F1D1D;">Eco Assistant, Oggy 🐾</h4>
-            <p style="font-size: 13px; color: #7F1D1D; margin: 5px 0 0 0; font-weight: bold;">Keep Our World Clean!</p>
+        <h4 style="margin-top: 10px; color: #7F1D1D;">Eco Assistant, Oggy 🐾</h4>
+        <p style="font-size: 13px; color: #7F1D1D; margin: 5px 0 0 0; font-weight: bold;">Keep Our World Clean!</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -108,21 +117,12 @@ if household_id:
             # Metric blocks matching dashboard card styles
             m_col1, m_col2 = st.columns(2)
             with m_col1:
-                st.metric(label="Incentive Transferred via bKash", value="+15.00 BDT")
+                st.metric(label="Incentive Transferred via bKash", value="+26.00 BDT")
             with m_col2:
                 st.metric(label="Feedstock System Routing", value=waste_type)
         else:
-            # --- DYNAMIC ERROR REACTION INJECTED HERE ---
             st.error("❌ Transaction Denied: Guidelines Not Met.")
-            
-            # Displays a cute, grumpy anime girl giving a thumbs down on failure conditions
-            st.markdown("""
-                <div style="text-align: center; margin-top: 20px; padding: 15px; background-color: #FFF1F2; border-radius: 12px; border: 1px dashed #FDA4AF;">
-                    <img src="https://pngtree.com" style="width: 130px; object-fit: contain;">
-                    <p style="color: #9F1239; font-weight: bold; margin-top: 10px; font-size: 14px;">
-                        "Hmph! Bad guy, no money for you!" 💢
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
+            # Displays a fallback text system safely handled by the application logic
+            st.warning('"Hmph! Bad guy, no money for you!" 💢')
             
 st.markdown('</div>', unsafe_allow_html=True)
